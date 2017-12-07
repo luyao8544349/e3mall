@@ -22,7 +22,7 @@
 	<!-- 2,注解驱动 -->
 	<mvc:annotation-driven/>
 	
-	<!-- 放行静态资源 -->
+	<!-- 4,放行静态资源 -->
 	<mvc:default-servlet-handler/>
 	
 	<!-- 3,视图解析器 -->
