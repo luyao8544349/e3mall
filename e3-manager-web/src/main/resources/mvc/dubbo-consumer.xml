@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://code.alibabatech.com/schema/dubbo
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	
+	<!-- 发布服务：把接口service发布Zookeeper注册中心 -->
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="luyao-manager-web" />
+	<!-- 使用multicast广播注册中心暴露服务地址 -->
+	<!-- <dubbo:registry address="multicast://224.5.6.7:1234"/> -->
+	<!-- 使用dubbo通过Zookeeper协议注册服务 -->
+	<dubbo:registry protocol="zookeeper" address="192.168.208.129:2181" />
+	<!-- 
+	通过接口引入服务 
+	timeout:服务超时
+	retries:失败重试  (集群服务器:一旦有服务宕机,尝试连接其他集群)
+	check:启动时依赖检测,默认为true,表现层启动时需要检测依赖的服务是否存在.
+	-->
+	<dubbo:reference id="itemService"
+		interface="cn.e3.manager.service.ItemService" timeout="1000000" retries="2"></dubbo:reference>
+	<dubbo:reference id="itemCatService"
+		interface="cn.e3.manager.service.ItemCatService" timeout="1000000" retries="2"></dubbo:reference>
+	<!-- 广告分类服务 -->
+	<dubbo:reference id="contentCategoryService"
+		interface="cn.e3.content.service.ContentCategoryService" timeout="1000000" retries="2"></dubbo:reference>
+	<!-- 广告内容服务 -->
+	<dubbo:reference id="contentService"
+		interface="cn.e3.content.service.ContentService" timeout="1000000" retries="2"></dubbo:reference>
+</beans>
